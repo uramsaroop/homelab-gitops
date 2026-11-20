@@ -14,6 +14,16 @@ spec:
         name: prometheus-community
         namespace: monitoring
   values:
+    # k3s embeds these components in the k3s process, so the chart's default
+    # Services/ServiceMonitors find no endpoints and fire *Down alerts.
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeEtcd:
+      enabled: false # k3s datastore here is SQLite, not etcd
     prometheus:
       prometheusSpec:
         serviceMonitorSelectorNilUsesHelmValues: false
